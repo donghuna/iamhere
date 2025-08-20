@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="I'm Here - Location sharing service" />
+    <title>I'm Here - 위치 공유 서비스</title>
+    
+    <!-- 카카오맵 SDK -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e02777961eea49050199a6e358812376&libraries=services"></script>
+    
+    <!-- 구글맵 SDK -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIWzUf1sA0kLHDEI489Feafn4SmtITc0o&libraries=geometry"></script>
+    
+    <script>
+      // 카카오맵 SDK 로딩 상태 확인
+      window.kakaoMapLoaded = false;
+      window.kakaoMapError = null;
+      
+      // SDK 로딩 완료 시 호출
+      function kakaoMapLoadCallback() {
+        console.log('카카오맵 SDK 로딩 완료 콜백 호출됨');
+        window.kakaoMapLoaded = true;
+      }
+      
+      // SDK 로딩 에러 시 호출
+      function kakaoMapErrorCallback(error) {
+        console.error('카카오맵 SDK 로딩 에러:', error);
+        window.kakaoMapError = error;
+      }
+      
+      // SDK 자동 로딩 대기
+      if (window.kakao && window.kakao.maps) {
+        console.log('카카오맵 SDK가 이미 로드되어 있습니다.');
+        window.kakaoMapLoaded = true;
+      } else {
+        console.log('카카오맵 SDK 로딩 대기 중...');
+        // SDK 로딩 완료를 기다림
+        const checkKakaoMap = () => {
+          if (window.kakao && window.kakao.maps) {
+            console.log('카카오맵 SDK 로딩 완료!');
+            window.kakaoMapLoaded = true;
+          } else {
+            setTimeout(checkKakaoMap, 100);
+          }
+        };
+        checkKakaoMap();
+      }
+      
+      // 구글맵 SDK 로딩 상태 확인
+      window.googleMapsLoaded = false;
+      window.googleMapsError = null;
+      
+      // 구글맵 SDK 로딩 완료 시 호출
+      function googleMapsLoadCallback() {
+        console.log('구글맵 SDK 로딩 완료 콜백 호출됨');
+        window.googleMapsLoaded = true;
+      }
+      
+      // 구글맵 SDK 로딩 에러 시 호출
+      function googleMapsErrorCallback(error) {
+        console.error('구글맵 SDK 로딩 에러:', error);
+        window.googleMapsError = error;
+      }
+      
+      // 구글맵 SDK 로딩 상태 모니터링
+      const checkGoogleMaps = () => {
+        if (window.google && window.google.maps) {
+          googleMapsLoadCallback();
+        } else {
+          setTimeout(checkGoogleMaps, 100);
+        }
+      };
+      
+      // 페이지 로드 후 구글맵 SDK 상태 확인
+      window.addEventListener('load', checkGoogleMaps);
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
